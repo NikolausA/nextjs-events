@@ -1,5 +1,5 @@
 import { router } from "../../trpc";
-import { eventsRouter } from "../routes/events";
+import { eventsRouter } from "./events";
 import { usersRouter } from "../routes/users";
 
 export const appRouter = router({
