@@ -1,4 +1,4 @@
-import { trpc } from "@/shared/api/api";
+import { trpc } from "@/shared/api/trpc";
 
 export const useEvents = () => {
   const all = trpc.events.getAll.useQuery();

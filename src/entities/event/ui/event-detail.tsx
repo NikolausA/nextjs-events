@@ -1,5 +1,5 @@
 import type { inferRouterOutputs } from "@trpc/server";
-import type { EventRouter } from "@/server/api/routes/events/index";
+import type { EventRouter } from "@/server/api/routers/events/index";
 
 type RouterOutput = inferRouterOutputs<EventRouter>;
 

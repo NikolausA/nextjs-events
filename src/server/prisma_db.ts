@@ -10,3 +10,13 @@ export const prisma =
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 export * from "@prisma/client";
+
+// Проверка подключения при запуске
+prisma
+  .$connect()
+  .then(() => {
+    console.log("✅ Prisma подключена к базе данных");
+  })
+  .catch((error) => {
+    console.error("❌ Ошибка подключения к базе данных:", error);
+  });

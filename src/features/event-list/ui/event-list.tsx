@@ -1,22 +1,24 @@
+"use client";
+
 import { EventCard } from "@/entities/event/ui/event-card";
-import { useEvents } from "@/entities/event/model/api/events.api";
+import { trpc } from "@/shared/api/trpc";
 
 export const EventList = () => {
-  const { all } = useEvents();
+  const { data, isLoading, error } = trpc.events.getAll.useQuery();
 
-  if (all.isLoading) {
+  if (isLoading) {
     return <div className="text-center text-gray-500">Загрузка событий...</div>;
   }
 
-  if (all.error) {
+  if (error) {
     return (
       <div className="text-center text-red-500">
-        Ошибка загрузки: {all.error.message}
+        Ошибка загрузки: {error.message}
       </div>
     );
   }
 
-  if (!all.data || all.data.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className="text-center text-gray-400">
         События пока не добавлены.
@@ -26,7 +28,7 @@ export const EventList = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {all.data?.map((event) => (
+      {data?.map((event) => (
         <EventCard
           key={event.id}
           id={event.id}

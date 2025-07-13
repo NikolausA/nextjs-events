@@ -19,11 +19,12 @@ export const EventCard = ({
 }: EventCardProps) => {
   return (
     <div className="flex font-sans rounded-lg shadow-xl overflow-hidden">
-      <div className="flex-none w-48 relative">
+      <div className="relative w-48 h-48 flex-none">
         <Image
           src="/poster.png"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          alt="event poster"
+          className="object-cover rounded-l-lg"
+          sizes="192px"
           fill
         />
       </div>
@@ -33,7 +34,7 @@ export const EventCard = ({
             {title}
           </h1>
           <div className="text-lg font-semibold text-slate-500">
-            {date.toDateString()}
+            {date.toLocaleDateString("ru-RU")}
           </div>
           <div className="w-full flex-none text-sm font-medium text-slate-700 mt-2">
             {description}

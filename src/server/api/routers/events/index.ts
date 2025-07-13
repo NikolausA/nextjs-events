@@ -1,15 +1,22 @@
-import { publicProcedure, router } from "@/server/trpc";
+import { publicProcedure, router } from "@/server/api/trpc";
 import { prisma } from "@/server/prisma_db";
 import { createEventSchema, getEventByIdSchema } from "./schema";
 
 export const eventsRouter = router({
-  getAll: publicProcedure.query(() => {
-    return prisma.event.findMany({
-      include: {
-        author: true,
-        participations: true,
-      },
-    });
+  getAll: publicProcedure.query(async () => {
+    try {
+      const events = await prisma.event.findMany({
+        include: {
+          author: true,
+          participations: true,
+        },
+      });
+
+      return events;
+    } catch (error) {
+      console.error("❌ Ошибка при получении событий:", error);
+      throw error;
+    }
   }),
 
   getById: publicProcedure.input(getEventByIdSchema).query(({ input }) => {
