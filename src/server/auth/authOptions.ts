@@ -15,6 +15,20 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id.toString();
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -33,12 +47,15 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.user.findUnique({
           where: { email: email },
         });
-        if (!user) return null;
+        if (!user) {
+          return null;
+        }
 
         const isValid = await compare(password, user.password);
         if (!isValid) {
           return null;
         }
+
         return {
           id: user.id.toString(),
           name: user.name,

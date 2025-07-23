@@ -17,6 +17,8 @@ export const LoginForm = () => {
       redirect: false,
     });
     if (res?.ok) router.push("/");
+
+    console.log("result:", res); // важно
   };
 
   return (

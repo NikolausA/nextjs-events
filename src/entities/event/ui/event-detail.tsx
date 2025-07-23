@@ -1,16 +1,17 @@
-import type { inferRouterOutputs } from "@trpc/server";
-import type { EventRouter } from "@/server/api/routers/events/index";
+// import type { inferRouterOutputs } from "@trpc/server";
+// import type { EventRouter } from "@/server/api/routers/events/index";
+import type { Event } from "@/server/api/routers/events/schema";
 
-type RouterOutput = inferRouterOutputs<EventRouter>;
+// type RouterOutput = inferRouterOutputs<EventRouter>;
 
-type EventDetailProps = NonNullable<RouterOutput["getById"]>;
+// type EventDetailProps = NonNullable<RouterOutput["getById"]>;
 
 export const EventDetail = ({
   title,
   description,
   date,
-}: // participations,
-EventDetailProps) => {
+  participations,
+}: Event) => {
   return (
     <div>
       <div className="px-4 sm:px-0">
@@ -48,9 +49,9 @@ EventDetailProps) => {
             <dt className="text-sm font-medium leading-6 text-gray-900">
               Участники
             </dt>
-            {/* <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               {participations.map(({ user }) => user.name).join(", ")}
-            </dd> */}
+            </dd>
           </div>
         </dl>
       </div>

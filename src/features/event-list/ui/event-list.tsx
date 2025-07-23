@@ -2,9 +2,10 @@
 
 import { EventCard } from "@/entities/event/ui/event-card";
 import { trpc } from "@/shared/api/trpc";
+import { JoinEventButton } from "@/features/join-event/ui/button";
 
 export const EventList = () => {
-  const { data, isLoading, error } = trpc.events.getAll.useQuery();
+  const { data, isLoading, error, refetch } = trpc.events.getAll.useQuery();
 
   if (isLoading) {
     return <div className="text-center text-gray-500">Загрузка событий...</div>;
@@ -27,15 +28,19 @@ export const EventList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="w-full max-w-5xl mx-auto space-y-8 px-4">
       {data?.map((event) => (
         <EventCard
           key={event.id}
           id={event.id}
           title={event.title}
-          description={event.description}
+          description={event?.description ?? "There is no description"}
           date={new Date(event.date)}
-          action={null}
+          action={
+            !event.isJoined && (
+              <JoinEventButton eventId={event.id} onSuccess={refetch} />
+            )
+          }
         />
       ))}
     </div>

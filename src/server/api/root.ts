@@ -1,4 +1,4 @@
-import { router } from "./trpc";
+import { router } from "../trpc/trpc";
 import { eventsRouter } from "./routers/events";
 // import { usersRouter } from "../routes/users";
 

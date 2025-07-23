@@ -37,7 +37,7 @@ export const EventCard = ({
             {date.toLocaleDateString("ru-RU")}
           </div>
           <div className="w-full flex-none text-sm font-medium text-slate-700 mt-2">
-            {description}
+            {description ?? "There is no description"}
           </div>
         </div>
         <div className="flex space-x-4 text-sm font-medium">
