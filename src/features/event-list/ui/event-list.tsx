@@ -2,7 +2,7 @@
 
 import { EventCard } from "@/entities/event/ui/event-card";
 import { trpc } from "@/shared/api/trpc";
-import { JoinEventButton } from "@/features/join-event/ui/button";
+import { ToggleParticipationButton } from "@/features/join-event/ui/button";
 
 export const EventList = () => {
   const { data, isLoading, error, refetch } = trpc.events.getAll.useQuery();
@@ -37,9 +37,11 @@ export const EventList = () => {
           description={event?.description ?? "There is no description"}
           date={new Date(event.date)}
           action={
-            !event.isJoined && (
-              <JoinEventButton eventId={event.id} onSuccess={refetch} />
-            )
+            <ToggleParticipationButton
+              eventId={event.id}
+              isJoined={event.isJoined}
+              onSuccess={refetch}
+            />
           }
         />
       ))}

@@ -91,6 +91,16 @@ export const eventsRouter = router({
       },
     });
   }),
+  leave: protectedProcedure
+    .input(JoinEventSchema)
+    .mutation(async ({ input, ctx }) => {
+      await prisma.participation.deleteMany({
+        where: {
+          eventId: input.id,
+          userId: ctx.user.id,
+        },
+      });
+    }),
 });
 
 export type EventRouter = typeof eventsRouter;
