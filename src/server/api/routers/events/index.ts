@@ -103,6 +103,23 @@ export const eventsRouter = router({
         },
       });
     }),
+  delete: protectedProcedure
+    .input(getEventByIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      const event = await ctx.prisma.event.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!event) throw new TRPCError({ code: "NOT_FOUND" });
+
+      if (event.authorId !== ctx.user.id) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Нет доступа" });
+      }
+
+      await ctx.prisma.event.delete({ where: { id: input.id } });
+
+      return { success: true };
+    }),
 
   join: protectedProcedure.input(JoinEventSchema).mutation(({ input, ctx }) => {
     return prisma.participation.create({

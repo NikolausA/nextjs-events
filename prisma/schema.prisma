@@ -32,7 +32,7 @@ model Event {
   date DateTime
 
   authorId Int
-  author User @relation(fields: [authorId], references: [id])
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   participations Participation[]
 }
 
@@ -40,8 +40,8 @@ model Participation {
   userId Int 
   eventId Int
 
-  user User @relation(fields: [userId], references: [id])
-  event Event @relation(fields: [eventId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@id([userId, eventId])
 }
