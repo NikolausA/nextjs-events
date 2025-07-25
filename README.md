@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🗓️ Events Platform
 
-## Getting Started
+Веб-приложения **Events** для создания, редактирования и участия в событиях. Проект реализован с использованием современных технологий фронтенда и бэкенда, построен по принципам модульности и использует архитектуру FSD (Feature-Sliced Design).
 
-First, run the development server:
+## 🚀 Демо
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> 📌 _Запуск проекта производится локально. Приложение работает на порту `http://localhost:3000`._
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Стек технологий
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Frontend:**
 
-## Learn More
+- [Next.js 15 (App Router)](https://nextjs.org/docs/app)
+- [React 19](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [react-hook-form](https://react-hook-form.com/)
+- [zod](https://zod.dev/) — валидация форм
+- [next-auth](https://next-auth.js.org/) — аутентификация через CredentialsProvider
 
-To learn more about Next.js, take a look at the following resources:
+**Backend:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [tRPC v11](https://trpc.io/) — типобезопасный API
+- [Prisma ORM](https://www.prisma.io/)
+- [SQLite](https://www.sqlite.org/) — файл базы данных `prisma/dev.db`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Прочее:**
 
-## Deploy on Vercel
+- [SuperJSON](https://github.com/blitz-js/superjson) — сериализация даты и вложенных структур
+- Архитектура: **FSD** (Feature-Sliced Design)
+- Аутентификация через токены (JWT) и сессии
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📦 Основной функционал
+
+- 👤 Регистрация и вход по email/паролю (NextAuth)
+- 🧭 Главная страница со списком событий
+- ➕ Создание события (только для авторизованных пользователей)
+- ✏️ Редактирование события (только для автора)
+- ❌ Удаление события (только для автора)
+- 📅 Присоединение и выход из события (по кнопке)
+- ✅ Ограничения доступа на уровне tRPC middleware
+- 🔐 Проверка `isAuthor` и `isJoined` для отображения UI-элементов
+- ⏳ Загрузка и блокировка кнопок во время запросов
+- ✅ Валидация форм через `react-hook-form` + `zodResolver`

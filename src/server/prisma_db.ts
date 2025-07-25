@@ -11,7 +11,6 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 export * from "@prisma/client";
 
-// Проверка подключения при запуске
 prisma
   .$connect()
   .then(() => {
