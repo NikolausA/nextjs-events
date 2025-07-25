@@ -29,7 +29,8 @@ export const EventCard = ({
         />
       </div>
       <div className="flex-auto p-6">
-        <div className="flex flex-wrap -mt-6 pt-6 pb-6">
+        <div className="flex flex-wrap pt-6 pb-6">
+          {" "}
           <h1 className="flex-auto text-lg font-semibold text-slate-900">
             {title}
           </h1>

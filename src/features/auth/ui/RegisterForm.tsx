@@ -1,58 +1,78 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { trpc } from "@/shared/api/trpc";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { registerSchema, RegisterFormData } from "@/shared/auth/schema";
 
 export const RegisterForm = () => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
+  const { mutateAsync, isPending } = trpc.user.register.useMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+  });
 
+  const onSubmit = async (data: RegisterFormData) => {
     try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        body: JSON.stringify({ name, email, password }),
-        headers: { "Content-Type": "application/json" },
+      await mutateAsync(data);
+      // сразу авторизуем:
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
       });
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        console.log("errorData: ", errorData);
-      }
-
-      router.push("/login");
+      if (res?.ok) router.push("/");
     } catch (err) {
-      console.error("Registration error: ", err);
+      console.error("Ошибка регистрации:", err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <input
-        className="border p-2"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        className="border p-2"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        className="border p-2"
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button className="bg-green-600 text-white py-2 px-4" type="submit">
-        Register
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div>
+        <label className="block">Имя</label>
+        <input
+          {...register("name")}
+          className="w-full border px-3 py-2 rounded"
+        />
+        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+      </div>
+
+      <div>
+        <label className="block">Email</label>
+        <input
+          {...register("email")}
+          className="w-full border px-3 py-2 rounded"
+        />
+        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+      </div>
+
+      <div>
+        <label className="block">Пароль</label>
+        <input
+          type="password"
+          {...register("password")}
+          className="w-full border px-3 py-2 rounded"
+        />
+        {errors.password && (
+          <p className="text-red-500">{errors.password.message}</p>
+        )}
+      </div>
+
+      <button
+        type="submit"
+        disabled={isPending}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+      >
+        {isPending ? "Регистрируем..." : "Зарегистрироваться"}
       </button>
     </form>
   );

@@ -1,17 +1,22 @@
 // import type { inferRouterOutputs } from "@trpc/server";
 // import type { EventRouter } from "@/server/api/routers/events/index";
 import type { Event } from "@/server/api/routers/events/schema";
+import Link from "next/link";
 
 // type RouterOutput = inferRouterOutputs<EventRouter>;
 
-// type EventDetailProps = NonNullable<RouterOutput["getById"]>;
+type EventDetailProps = Event & {
+  isAuthor: boolean;
+};
 
 export const EventDetail = ({
+  id,
   title,
   description,
   date,
   participations,
-}: Event) => {
+  isAuthor,
+}: EventDetailProps) => {
   return (
     <div>
       <div className="px-4 sm:px-0">
@@ -55,6 +60,14 @@ export const EventDetail = ({
           </div>
         </dl>
       </div>
+      {isAuthor && (
+        <Link
+          href={`/events/${id}/edit`}
+          className="h-10 px-6 py-2 font-semibold rounded-md text-white disabled:opacity-50 bg-red-500 hover:bg-red-700 border border-slate-200 align-middle leading-10"
+        >
+          Редактировать
+        </Link>
+      )}
     </div>
   );
 };

@@ -22,6 +22,7 @@ export const eventSchema = z.object({
         : undefined,
     z.date()
   ),
+  authorId: z.number(),
 
   participations: z.array(
     z.object({
@@ -34,6 +35,13 @@ export const eventSchema = z.object({
 
 export const JoinEventSchema = z.object({
   id: z.number().int().positive(),
+});
+
+export const updateSchema = z.object({
+  id: z.number(),
+  title: z.string().min(1),
+  description: z.string().optional(),
+  date: z.union([z.string(), z.date()]),
 });
 
 export type Event = z.infer<typeof eventSchema>;

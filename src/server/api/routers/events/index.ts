@@ -9,6 +9,7 @@ import {
   createEventSchema,
   getEventByIdSchema,
   eventSchema,
+  updateSchema,
   JoinEventSchema,
 } from "./schema";
 
@@ -32,7 +33,7 @@ export const eventsRouter = router({
     }
   }),
 
-  getById: publicProcedure
+  getById: protectedProcedure
     .input(getEventByIdSchema)
     .query(async ({ input }) => {
       const event = await prisma.event.findUnique({
@@ -42,6 +43,7 @@ export const eventsRouter = router({
           title: true,
           description: true,
           date: true,
+          authorId: true,
           participations: {
             select: {
               user: {
@@ -83,6 +85,25 @@ export const eventsRouter = router({
         },
       });
     }),
+  update: protectedProcedure
+    .input(updateSchema)
+    .mutation(async ({ input, ctx }) => {
+      const event = await prisma.event.findUnique({ where: { id: input.id } });
+
+      if (!event || event.authorId !== ctx.user.id) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      return prisma.event.update({
+        where: { id: input.id },
+        data: {
+          title: input.title,
+          description: input.description,
+          date: new Date(input.date),
+        },
+      });
+    }),
+
   join: protectedProcedure.input(JoinEventSchema).mutation(({ input, ctx }) => {
     return prisma.participation.create({
       data: {

@@ -1,6 +1,7 @@
 "use client";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+// import { useRouter } from "next/navigation";
 
 type Props = {
   name: string | null;
@@ -15,7 +16,14 @@ export const UserActions = ({ name }: Props) => (
     >
       Добавить событие
     </Link>
-    <button onClick={() => signOut()} className="text-black hover:underline">
+    <button
+      onClick={() =>
+        signOut({
+          callbackUrl: "/",
+        })
+      }
+      className="text-black hover:underline  cursor-pointer"
+    >
       Выйти
     </button>
   </div>

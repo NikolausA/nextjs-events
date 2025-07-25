@@ -4,6 +4,7 @@ import "./globals.css";
 import { TrpcProvider } from "@/app/TrpcProvider";
 import { AuthProvider } from "@/app/SessionProvider";
 import { Header } from "@/widgets/Header/ui/Header";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +35,10 @@ export default function RootLayout({
           <AuthProvider>
             <TrpcProvider>
               <Header />
-              <main className="flex-1 container mx-auto px-4 pt-[250px] max-w-7xl">
+              <main className="container mx-auto px-4 pb-8 max-w-7xl">
                 {children}
               </main>
+              <Toaster position="top-right" />
             </TrpcProvider>
           </AuthProvider>
         </div>
