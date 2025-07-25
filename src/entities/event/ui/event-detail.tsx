@@ -1,10 +1,6 @@
-// import type { inferRouterOutputs } from "@trpc/server";
-// import type { EventRouter } from "@/server/api/routers/events/index";
 import type { Event } from "@/server/api/routers/events/schema";
 import Link from "next/link";
 import { DeleteEventButton } from "@/features/delete-event/ui/delete-event-button";
-
-// type RouterOutput = inferRouterOutputs<EventRouter>;
 
 type EventDetailProps = Event & {
   isAuthor: boolean;
