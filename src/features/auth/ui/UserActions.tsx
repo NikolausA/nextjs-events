@@ -1,7 +1,7 @@
 "use client";
+
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
 
 type Props = {
   name: string | null;
